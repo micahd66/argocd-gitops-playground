@@ -30,7 +30,11 @@ spec:
             - name: APP_CONFIG_techdocs_publisher_type
               value: "local"
             - name: APP_CONFIG_app_title
-              value: "My Cool Backstage Portal"
+              value: "My Cool Backstage Portal v2"
+            - name: APP_CONFIG_backend_auth_dangerouslyDisableDefaultAuthPolicy
+              value: "true"
+
+
 
         # Use built-in Postgres DB (fine for local/testing)
         postgresql:
