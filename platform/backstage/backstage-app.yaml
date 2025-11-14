@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  namespace: argocd          # ArgoCD's namespace
+spec:
+  project: default
+
+  source:
+    # This is the OFFICIAL Backstage Helm chart repo
+    # helm repo add backstage https://backstage.github.io/charts
+    repoURL: https://backstage.github.io/charts
+    chart: backstage
+    targetRevision: 2.6.3    # or latest listed in the chart repo
+    helm:
+      values: |-
+        backstage:
+          extraEnvVars:
+            # Base URLs for the UI and backend
+            - name: APP_CONFIG_app_baseUrl
+              value: "http://localhost:7007"
+            - name: APP_CONFIG_backend_baseUrl
+              value: "http://localhost:7007"
+
+            # TechDocs basic (local) setup
+            - name: APP_CONFIG_techdocs_builder
+              value: "local"
+            - name: APP_CONFIG_techdocs_generator_runIn
+              value: "docker"
+            - name: APP_CONFIG_techdocs_publisher_type
+              value: "local"
+
+        # Use built-in Postgres DB (fine for local/testing)
+        postgresql:
+          enabled: true
+          auth:
+            postgresPassword: backstage
+            username: backstage
+            password: backstage
+            database: backstage
+
+        ingress:
+          enabled: false  # we'll use port-forward instead
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backstage
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
