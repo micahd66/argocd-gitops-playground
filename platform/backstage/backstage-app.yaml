@@ -30,6 +30,9 @@ spec:
             - name: APP_CONFIG_techdocs_publisher_type
               value: "local"
 
+            - name: APP_CONFIG_backend_auth_dangerouslyDisableDefaultAuthPolicy
+              value: "true"
+
         # Use built-in Postgres DB (fine for local/testing)
         postgresql:
           enabled: true
